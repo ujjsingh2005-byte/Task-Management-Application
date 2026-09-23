@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg: #FAF8F3;
+    --color-paper: #FFFDF8;
+    --color-stone: #F1EFE8;
+    --color-cloud: #E8EAF0;
+    --color-border: #DDD9CF;
+    --color-border-hover: #CBD6CF;
+    --color-text: #111827;
+    --color-text-muted: #64748B;
+    --color-text-dim: #94A3B8;
+    
+    --color-violet: #7C5CFC;
+    --color-aqua: #22D3EE;
+    --color-coral: #FF6B5E;
+    --color-amber: #F5B942;
+    --color-lime: #A3E635;
+    --color-blue: #4F8CFF;
+    --color-rose: #FB7185;
+  }
+
+  .dark {
+    --color-bg: #070B16;
+    --color-paper: #111827;
+    --color-stone: #182235;
+    --color-cloud: #0B1020;
+    --color-border: #273449;
+    --color-border-hover: #374761;
+    --color-text: #F8FAFC;
+    --color-text-muted: #A7B2C3;
+    --color-text-dim: #64748B;
+
+    --color-violet: #8B6CFF;
+    --color-aqua: #22D3EE;
+    --color-coral: #FF6B5E;
+    --color-amber: #F5B942;
+    --color-lime: #A3E635;
+    --color-blue: #4F8CFF;
+    --color-rose: #FB7185;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    transition-property: color, background-color, border-color;
+    transition-duration: 200ms;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom Editorial Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #DDD9CF;
+  border-radius: 9999px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #273449;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #CBD6CF;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #374761;
+}
+
+/* Card System */
+@layer components {
+  /* Type A: Standard Paper Card */
+  .tf-card-paper {
+    background-color: var(--color-paper);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px -2px rgba(17, 24, 39, 0.04);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .dark .tf-card-paper {
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5), 0 0 0 1px #273449;
+  }
+
+  /* Type B: Featured Midnight Card */
+  .tf-card-feature {
+    background-color: #0B1020;
+    color: #F8FAFC;
+    border: 1px solid #273449;
+    border-radius: 1rem;
+    box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.6);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Type C: Accent Elevated Card */
+  .tf-card-elevated {
+    background-color: var(--color-stone);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    box-shadow: 0 12px 36px -4px rgba(17, 24, 39, 0.08);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .dark .tf-card-elevated {
+    box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.7), 0 0 0 1px #273449;
+  }
+}
+
+/* Subtle focus rings */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+}
