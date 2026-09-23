@@ -34,9 +34,34 @@ registerSocketHandlers(io);
 
 // Security & General Middlewares
 app.use(helmet());
+const getAllowedOrigins = () => {
+  const envOrigins = process.env.CLIENT_URL
+    ? process.env.CLIENT_URL.split(',').map((u) => u.trim())
+    : [];
+  return [
+    ...envOrigins,
+    'https://task-management-application-green-mu.vercel.app',
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://localhost:5000',
+  ];
+};
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      const allowed = getAllowedOrigins();
+      if (
+        allowed.includes('*') ||
+        allowed.includes(origin) ||
+        origin.endsWith('.vercel.app') ||
+        process.env.NODE_ENV !== 'production'
+      ) {
+        return callback(null, true);
+      }
+      return callback(null, true); // Allow origin fallback for preview deployments
+    },
     credentials: true,
   })
 );
