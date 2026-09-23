@@ -47,13 +47,37 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
 
-// Health check endpoint
-app.get('/health', (req, res) => {
+// Root route handler for deployment verification (Render/Vercel/Railway)
+app.get('/', (req, res) => {
+  return ApiResponse.success(res, 'TaskFlow API is running smoothly', {
+    name: 'TaskFlow Real-Time Collaborative Task Management API',
+    version: '1.0.0',
+    status: 'online',
+    timestamp: new Date().toISOString(),
+    uptime: `${Math.floor(process.uptime())}s`,
+    documentation: {
+      health: '/health',
+      apiHealth: '/api/health',
+      auth: '/api/auth',
+      tasks: '/api/tasks',
+      notifications: '/api/notifications',
+      dashboard: '/api/dashboard',
+      admin: '/api/admin',
+    },
+  });
+});
+
+// Health check endpoints
+const healthCheck = (req, res) => {
   return ApiResponse.success(res, 'Task Management API Server is running smoothly', {
+    status: 'healthy',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
   });
-});
+};
+
+app.get('/health', healthCheck);
+app.get('/api/health', healthCheck);
 
 // Mount API Routes with Rate Limiting
 app.use('/api', apiLimiter);
