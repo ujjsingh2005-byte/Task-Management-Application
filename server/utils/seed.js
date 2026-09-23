@@ -38,7 +38,7 @@ const seedData = async () => {
     const adminUser = await User.create({
       name: 'Ujjwal Singh',
       email: 'ujjsingh203@gmail.com',
-      password: 'AdminPassword123',
+      password: 'Ujjwal@123',
       role: ROLES.ADMIN,
       avatar: '/admin-avatar.jpg',
     });
@@ -165,10 +165,9 @@ const seedData = async () => {
     logger.info('✅ Database seeding successfully completed!');
     logger.info('\nDemo Credentials:');
     logger.info('-------------------------------------------');
-    logger.info('Admin Account: admin@taskflow.dev / AdminPassword123');
-    logger.info('User 1:        ujjwal@taskflow.dev / UserPassword123');
-    logger.info('User 2:        rahul@taskflow.dev  / UserPassword123');
-    logger.info('User 3:        amit@taskflow.dev   / UserPassword123');
+    logger.info('Admin Account: ujjsingh203@gmail.com / Ujjwal@123');
+    logger.info('User 1:        rahul@taskflow.dev    / UserPassword123');
+    logger.info('User 2:        amit@taskflow.dev     / UserPassword123');
     logger.info('-------------------------------------------');
 
     process.exit(0);
