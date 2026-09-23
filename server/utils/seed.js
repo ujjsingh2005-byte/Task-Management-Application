@@ -36,19 +36,19 @@ const seedData = async () => {
 
     // 1. Create Demo Users
     const adminUser = await User.create({
-      name: 'System Administrator',
-      email: 'admin@taskflow.dev',
+      name: 'Ujjwal Singh',
+      email: 'ujjsingh203@gmail.com',
       password: 'AdminPassword123',
       role: ROLES.ADMIN,
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+      avatar: '/admin-avatar.jpg',
     });
 
     const userUjjwal = await User.create({
-      name: 'Ujjwal Singh',
-      email: 'ujjwal@taskflow.dev',
+      name: 'Rahul Kumar',
+      email: 'rahul@taskflow.dev',
       password: 'UserPassword123',
       role: ROLES.USER,
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
+      avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150&auto=format&fit=crop&q=80',
     });
 
     const userRahul = await User.create({

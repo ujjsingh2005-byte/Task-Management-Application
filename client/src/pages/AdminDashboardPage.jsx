@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { taskService } from '../services/taskService';
+import { useAuth } from '../context/AuthContext';
 import { DashboardStatsSkeleton } from '../components/common/Skeletons';
 import {
   ShieldAlert,
@@ -12,9 +13,16 @@ import {
   Activity,
   Shield,
   Zap,
+  Mail,
+  Phone,
+  MapPin,
+  Github,
+  GraduationCap,
+  ExternalLink,
 } from 'lucide-react';
 
 export const AdminDashboardPage = () => {
+  const { user } = useAuth();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -48,18 +56,64 @@ export const AdminDashboardPage = () => {
 
   return (
     <div className="space-y-8 animate-fadeIn">
-      {/* Header Banner */}
-      <div className="bg-gradient-to-r from-midnight-deep via-midnight-ink to-midnight-slate rounded-2xl p-6 sm:p-8 text-midnight-text border border-midnight-subtle shadow-xl">
-        <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-violet/15 text-violet-light text-xs font-bold mb-3 border border-violet/30">
-          <Shield className="h-3.5 w-3.5 text-violet-light" />
-          <span>System Administrator Oversight</span>
+      {/* Header Banner with Admin Identity */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-midnight-deep via-midnight-ink to-midnight-slate rounded-3xl p-6 sm:p-8 text-midnight-text border border-midnight-subtle shadow-xl">
+        <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6">
+          {/* Admin Photo */}
+          <div className="h-24 w-24 sm:h-28 sm:w-28 rounded-2xl bg-gradient-to-tr from-violet to-aqua p-0.5 shadow-xl shrink-0 ring-4 ring-midnight-border/60 overflow-hidden">
+            <img
+              src="/admin-avatar.jpg"
+              alt="Ujjwal Singh"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = user?.avatar || '/admin-avatar.jpg';
+              }}
+              className="h-full w-full object-cover object-top"
+            />
+          </div>
+
+          {/* Admin Info */}
+          <div className="flex-1 text-center md:text-left space-y-2">
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
+              <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-violet/20 text-violet-light text-xs font-bold border border-violet/40">
+                <Shield className="h-3.5 w-3.5 text-violet-light" />
+                <span>System Administrator</span>
+              </span>
+              <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-aqua/10 text-aqua border border-aqua/30">
+                <span>Lead Full-Stack Architect</span>
+              </span>
+            </div>
+
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+              Ujjwal Singh
+            </h1>
+
+            <p className="text-xs text-midnight-muted max-w-xl">
+              B.Tech in Computer Science & Engineering (AKTU, Lucknow) • MERN & Python Full-Stack Engineer • System Governance & Real-Time Analytics
+            </p>
+
+            {/* Quick Contacts */}
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-4 gap-y-1 text-xs text-midnight-muted pt-1">
+              <span className="flex items-center space-x-1">
+                <Mail className="h-3 w-3 text-violet-light" />
+                <span>ujjsingh203@gmail.com</span>
+              </span>
+              <span className="flex items-center space-x-1">
+                <Phone className="h-3 w-3 text-lime" />
+                <span>+91 8604913255</span>
+              </span>
+              <a
+                href="https://github.com/ujjsingh2005-byte"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center space-x-1 text-violet-light hover:underline"
+              >
+                <Github className="h-3 w-3" />
+                <span>ujjsingh2005-byte</span>
+              </a>
+            </div>
+          </div>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-          Platform Analytics & Governance
-        </h1>
-        <p className="text-xs sm:text-sm text-midnight-muted mt-1 max-w-2xl">
-          Real-time database collection aggregates, user distributions, and task health across all workspace entities.
-        </p>
       </div>
 
       {/* Global Totals */}
