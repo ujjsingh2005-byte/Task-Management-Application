@@ -133,17 +133,17 @@ export const LoginPage = () => {
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
-                onClick={() => handleFillDemo('ujjwal@taskflow.dev', 'UserPassword123')}
+                onClick={() => handleFillDemo('rahul@taskflow.dev', 'UserPassword123')}
                 className="px-2.5 py-2 text-xs font-semibold bg-midnight-slate hover:bg-midnight-deep text-midnight-text rounded-xl border border-midnight-subtle transition-colors text-center cursor-pointer"
               >
-                User (Ujjwal)
+                Member (Rahul)
               </button>
               <button
                 type="button"
-                onClick={() => handleFillDemo('admin@taskflow.dev', 'AdminPassword123')}
-                className="px-2.5 py-2 text-xs font-semibold bg-violet/10 hover:bg-violet/20 text-violet-light rounded-xl border border-violet/30 transition-colors text-center cursor-pointer"
+                onClick={() => handleFillDemo('ujjsingh203@gmail.com', 'Ujjwal@123')}
+                className="px-2.5 py-2 text-xs font-semibold bg-violet/15 hover:bg-violet/25 text-violet-light rounded-xl border border-violet/30 transition-colors text-center cursor-pointer"
               >
-                Admin (Admin)
+                Admin (Ujjwal)
               </button>
             </div>
           </div>

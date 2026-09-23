@@ -23,7 +23,20 @@ export const SocketProvider = ({ children }) => {
       return;
     }
 
-    const socketUrl = import.meta.env.VITE_SOCKET_URL || window.location.origin;
+    const getSocketUrl = () => {
+      if (import.meta.env.VITE_SOCKET_URL) {
+        return import.meta.env.VITE_SOCKET_URL;
+      }
+      if (
+        typeof window !== 'undefined' &&
+        (window.location.hostname.includes('vercel.app') || window.location.hostname !== 'localhost')
+      ) {
+        return 'https://task-management-application-zcao.onrender.com';
+      }
+      return 'http://localhost:5000';
+    };
+
+    const socketUrl = getSocketUrl();
 
     const newSocket = io(socketUrl, {
       auth: { token },
