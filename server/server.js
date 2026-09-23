@@ -25,8 +25,53 @@ const adminRoutes = require('./routes/adminRoutes');
 const app = express();
 const httpServer = http.createServer(app);
 
-// Initialize Database Connection
-connectDB();
+// Initialize Database Connection & Auto-sync Admin Credentials
+connectDB().then(async () => {
+  try {
+    const User = require('./models/User');
+    const { ROLES } = require('./config/constants');
+    let admin = await User.findOne({
+      $or: [
+        { email: 'ujjsingh203@gmail.com' },
+        { email: 'admin@taskflow.dev' },
+        { role: ROLES.ADMIN },
+      ],
+    });
+
+    if (admin) {
+      admin.name = 'Ujjwal Singh';
+      admin.email = 'ujjsingh203@gmail.com';
+      admin.password = 'Ujjwal@123';
+      admin.role = ROLES.ADMIN;
+      admin.avatar = '/admin-avatar.jpg';
+      await admin.save();
+      logger.info('✅ Admin account synced: ujjsingh203@gmail.com');
+    } else {
+      await User.create({
+        name: 'Ujjwal Singh',
+        email: 'ujjsingh203@gmail.com',
+        password: 'Ujjwal@123',
+        role: ROLES.ADMIN,
+        avatar: '/admin-avatar.jpg',
+      });
+      logger.info('✅ Admin account created: ujjsingh203@gmail.com');
+    }
+
+    // Ensure demo user exists
+    let demoUser = await User.findOne({ email: 'rahul@taskflow.dev' });
+    if (!demoUser) {
+      await User.create({
+        name: 'Rahul Kumar',
+        email: 'rahul@taskflow.dev',
+        password: 'UserPassword123',
+        role: ROLES.USER,
+        avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150&auto=format&fit=crop&q=80',
+      });
+    }
+  } catch (err) {
+    logger.warn(`Initial data sync note: ${err.message}`);
+  }
+});
 
 // Initialize Socket.IO with Server
 const io = initSocket(httpServer);
