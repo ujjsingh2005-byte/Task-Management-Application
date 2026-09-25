@@ -28,8 +28,12 @@ export const LoginPage = () => {
     setError('');
     setLoading(true);
     try {
-      await login(email, password);
-      navigate(from, { replace: true });
+      const loggedInUser = await login(email, password);
+      if (loggedInUser?.role === 'ADMIN' && from === '/dashboard') {
+        navigate('/admin', { replace: true });
+      } else {
+        navigate(from, { replace: true });
+      }
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Invalid email or password');
     } finally {
