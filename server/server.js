@@ -30,7 +30,10 @@ const httpServer = http.createServer(app);
 connectDB().then(async () => {
   try {
     const User = require('./models/User');
-    const { ROLES } = require('./config/constants');
+    const Task = require('./models/Task');
+    const ActivityLog = require('./models/ActivityLog');
+    const { ROLES, TASK_STATUS, TASK_PRIORITY, ACTIVITY_ACTIONS } = require('./config/constants');
+
     let admin = await User.findOne({
       $or: [
         { email: 'ujjsingh203@gmail.com' },
@@ -48,7 +51,7 @@ connectDB().then(async () => {
       await admin.save();
       logger.info('✅ Admin account synced: ujjsingh203@gmail.com');
     } else {
-      await User.create({
+      admin = await User.create({
         name: 'Ujjwal Singh',
         email: 'ujjsingh203@gmail.com',
         password: 'Ujjwal@123',
@@ -59,15 +62,149 @@ connectDB().then(async () => {
     }
 
     // Ensure demo user exists
-    let demoUser = await User.findOne({ email: 'rahul@taskflow.dev' });
-    if (!demoUser) {
-      await User.create({
+    let rahul = await User.findOne({ email: 'rahul@taskflow.dev' });
+    if (!rahul) {
+      rahul = await User.create({
         name: 'Rahul Kumar',
         email: 'rahul@taskflow.dev',
         password: 'UserPassword123',
         role: ROLES.USER,
         avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150&auto=format&fit=crop&q=80',
       });
+    }
+
+    let priya = await User.findOne({ email: 'priya@taskflow.dev' });
+    if (!priya) {
+      priya = await User.create({
+        name: 'Priya Sharma',
+        email: 'priya@taskflow.dev',
+        password: 'UserPassword123',
+        role: ROLES.USER,
+        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
+      });
+    }
+
+    let vikram = await User.findOne({ email: 'vikram@taskflow.dev' });
+    if (!vikram) {
+      vikram = await User.create({
+        name: 'Vikram Patel',
+        email: 'vikram@taskflow.dev',
+        password: 'UserPassword123',
+        role: ROLES.USER,
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+      });
+    }
+
+    // Seed sample tasks and audit logs if task count is low
+    const taskCount = await Task.countDocuments();
+    if (taskCount === 0) {
+      logger.info('🌱 Seeding initial workspace tasks and audit logs...');
+
+      const sampleTasks = [
+        {
+          title: 'Configure Enterprise SSO & Role Guardrails',
+          description: 'Deploy role-based access control with token expiration security.',
+          status: TASK_STATUS.COMPLETED,
+          priority: TASK_PRIORITY.HIGH,
+          createdBy: admin._id,
+          assignedTo: rahul._id,
+          dueDate: new Date(Date.now() + 86400000 * 3),
+        },
+        {
+          title: 'Deploy Socket.IO Live Telemetry Gateway',
+          description: 'Establish real-time state synchronization and live presence indicators across nodes.',
+          status: TASK_STATUS.IN_PROGRESS,
+          priority: TASK_PRIORITY.URGENT,
+          createdBy: admin._id,
+          assignedTo: admin._id,
+          dueDate: new Date(Date.now() + 86400000 * 2),
+        },
+        {
+          title: 'Implement Optimistic Concurrency Control (OCC)',
+          description: 'Eliminate race conditions during high-concurrency editing sessions using version checks.',
+          status: TASK_STATUS.COMPLETED,
+          priority: TASK_PRIORITY.HIGH,
+          createdBy: admin._id,
+          assignedTo: priya._id,
+          dueDate: new Date(Date.now() + 86400000 * 4),
+        },
+        {
+          title: 'Design Aurora Multi-Theme Design System',
+          description: 'Build Ivory Paper and Midnight Obsidian palette tokens with Lucide iconography.',
+          status: TASK_STATUS.IN_PROGRESS,
+          priority: TASK_PRIORITY.MEDIUM,
+          createdBy: admin._id,
+          assignedTo: vikram._id,
+          dueDate: new Date(Date.now() + 86400000 * 5),
+        },
+        {
+          title: 'Set up Automated Security Audit & SLA Monitors',
+          description: 'Implement audit logging hooks to track critical workspace governance mutations.',
+          status: TASK_STATUS.TODO,
+          priority: TASK_PRIORITY.HIGH,
+          createdBy: admin._id,
+          assignedTo: rahul._id,
+          dueDate: new Date(Date.now() + 86400000 * 7),
+        },
+      ];
+
+      const createdTasks = await Task.insertMany(sampleTasks);
+
+      // Seed audit activities
+      const auditActivities = [
+        {
+          taskId: createdTasks[0]._id,
+          userId: admin._id,
+          action: ACTIVITY_ACTIONS.CREATED,
+          metadata: { title: createdTasks[0].title },
+          createdAt: new Date(Date.now() - 3600000 * 5),
+        },
+        {
+          taskId: createdTasks[0]._id,
+          userId: rahul._id,
+          action: ACTIVITY_ACTIONS.STATUS_CHANGED,
+          metadata: { title: createdTasks[0].title, from: 'IN_PROGRESS', to: 'COMPLETED' },
+          createdAt: new Date(Date.now() - 3600000 * 4),
+        },
+        {
+          taskId: createdTasks[1]._id,
+          userId: admin._id,
+          action: ACTIVITY_ACTIONS.CREATED,
+          metadata: { title: createdTasks[1].title },
+          createdAt: new Date(Date.now() - 3600000 * 3),
+        },
+        {
+          taskId: createdTasks[1]._id,
+          userId: admin._id,
+          action: ACTIVITY_ACTIONS.PRIORITY_CHANGED,
+          metadata: { title: createdTasks[1].title, from: 'HIGH', to: 'URGENT' },
+          createdAt: new Date(Date.now() - 3600000 * 2),
+        },
+        {
+          taskId: createdTasks[2]._id,
+          userId: admin._id,
+          action: ACTIVITY_ACTIONS.ASSIGNED,
+          metadata: { title: createdTasks[2].title, to: 'Priya Sharma' },
+          createdAt: new Date(Date.now() - 3600000 * 1.5),
+        },
+        {
+          taskId: createdTasks[3]._id,
+          userId: admin._id,
+          action: ACTIVITY_ACTIONS.CREATED,
+          metadata: { title: createdTasks[3].title },
+          createdAt: new Date(Date.now() - 3600000 * 1),
+        },
+        {
+          taskId: createdTasks[4]._id,
+          userId: admin._id,
+          action: ACTIVITY_ACTIONS.CREATED,
+          metadata: { title: createdTasks[4].title },
+          createdAt: new Date(Date.now() - 1800000),
+        },
+      ];
+
+      await ActivityLog.insertMany(auditActivities);
+      logger.info('✅ Sample tasks and audit logs successfully seeded!');
     }
   } catch (err) {
     logger.warn(`Initial data sync note: ${err.message}`);
