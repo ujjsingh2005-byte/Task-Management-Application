@@ -3,9 +3,11 @@ const User = require('../models/User');
 const { ROLES } = require('../config/constants');
 const ApiResponse = require('../utils/apiResponse');
 
-const generateToken = (userId) => {
+const generateToken = (user) => {
+  const userId = user._id ? user._id.toString() : user.toString();
+  const role = user.role || 'USER';
   return jwt.sign(
-    { id: userId },
+    { id: userId, userId, role },
     process.env.JWT_SECRET || 'super_secret_jwt_key_replace_in_production_min_32_chars',
     { expiresIn: process.env.JWT_EXPIRE || '24h' }
   );
@@ -37,7 +39,7 @@ const authController = {
         role: ROLES.USER,
       });
 
-      const token = generateToken(user._id);
+      const token = generateToken(user);
 
       return ApiResponse.created(res, 'User registered successfully', {
         user: user.toSafeObject(),
@@ -65,7 +67,7 @@ const authController = {
         return ApiResponse.unauthorized(res, 'Invalid email or password');
       }
 
-      const token = generateToken(user._id);
+      const token = generateToken(user);
 
       return ApiResponse.success(res, 'Login successful', {
         user: user.toSafeObject(),
