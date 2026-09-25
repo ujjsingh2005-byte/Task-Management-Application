@@ -23,6 +23,7 @@ const adminRoutes = require('./routes/adminRoutes');
 
 // Initialize Express
 const app = express();
+app.set('trust proxy', 1);
 const httpServer = http.createServer(app);
 
 // Initialize Database Connection & Auto-sync Admin Credentials
