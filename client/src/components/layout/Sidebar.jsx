@@ -13,6 +13,8 @@ import {
   Users,
   Activity,
   UserCheck,
+  User,
+  Bell,
   Settings,
   Shield,
   Plus,
@@ -48,24 +50,31 @@ export const Sidebar = ({ isOpen, onClose, onOpenCreateTask }) => {
 
   const navItems = [
     { to: '/dashboard', label: 'Overview', icon: LayoutDashboard, iconColor: 'text-violet' },
+    { to: '/tasks?assignment=ASSIGNED_TO_ME', label: 'My Tasks', icon: UserCheck, iconColor: 'text-coral' },
     { to: '/tasks', label: 'All Tasks', icon: CheckSquare, iconColor: 'text-blueAccent' },
     { to: '/tasks?view=kanban', label: 'Task Board', icon: Kanban, iconColor: 'text-aqua' },
     { to: '/tasks?view=calendar', label: 'Schedule', icon: Calendar, iconColor: 'text-amber' },
+    { to: '/dashboard', label: 'Analytics', icon: BarChart3, iconColor: 'text-lime' },
   ];
 
   const workspaceItems = [
     { to: '/team', label: 'Team', icon: Users, iconColor: 'text-lime' },
     { to: '/activity', label: 'Live Activity', icon: Activity, iconColor: 'text-aqua' },
+    { to: '/notifications', label: 'Notifications', icon: Bell, iconColor: 'text-amber' },
   ];
 
   const accountItems = [
-    { to: '/profile', label: 'My Profile', icon: UserCheck, iconColor: 'text-midnight-muted' },
+    { to: '/profile', label: 'My Profile', icon: User, iconColor: 'text-violet-light' },
     { to: '/settings', label: 'Settings', icon: Settings, iconColor: 'text-midnight-muted' },
   ];
 
   const adminItems = [
-    { to: '/admin', label: 'Admin Metrics', icon: Shield, iconColor: 'text-violet' },
+    { to: '/admin', label: 'Admin Dashboard', icon: Shield, iconColor: 'text-violet' },
     { to: '/admin/users', label: 'User Directory', icon: Users, iconColor: 'text-blueAccent' },
+    { to: '/admin/tasks', label: 'Task Management', icon: CheckSquare, iconColor: 'text-coral' },
+    { to: '/admin/activity', label: 'Activity / Audit Logs', icon: Activity, iconColor: 'text-aqua' },
+    { to: '/admin/reports', label: 'Reports', icon: BarChart3, iconColor: 'text-lime' },
+    { to: '/admin/settings', label: 'System Settings', icon: Settings, iconColor: 'text-amber' },
   ];
 
   return (

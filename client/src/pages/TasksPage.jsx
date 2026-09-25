@@ -26,8 +26,17 @@ export const TasksPage = () => {
   const [createInitialStatus, setCreateInitialStatus] = useState(null);
 
   useEffect(() => {
-    fetchTasks();
-  }, [fetchTasks]);
+    const assignmentParam = searchParams.get('assignment');
+    if (assignmentParam) {
+      setFilters((prev) => {
+        const next = { ...prev, assignment: assignmentParam, page: 1 };
+        fetchTasks(next);
+        return next;
+      });
+    } else {
+      fetchTasks();
+    }
+  }, [searchParams, fetchTasks, setFilters]);
 
   const handleViewChange = (view) => {
     setSearchParams((prev) => {

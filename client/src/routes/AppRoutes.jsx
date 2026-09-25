@@ -12,10 +12,15 @@ import { TasksPage } from '../pages/TasksPage';
 import { TaskDetailsPage } from '../pages/TaskDetailsPage';
 import { TeamPage } from '../pages/TeamPage';
 import { ActivityPage } from '../pages/ActivityPage';
+import { NotificationsPage } from '../pages/NotificationsPage';
 import { SettingsPage } from '../pages/SettingsPage';
 import { ProfilePage } from '../pages/ProfilePage';
 import { AdminDashboardPage } from '../pages/AdminDashboardPage';
 import { AdminUsersPage } from '../pages/AdminUsersPage';
+import { AdminTasksPage } from '../pages/AdminTasksPage';
+import { AdminActivityPage } from '../pages/AdminActivityPage';
+import { AdminReportsPage } from '../pages/AdminReportsPage';
+import { AdminSettingsPage } from '../pages/AdminSettingsPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
 
 export const AppRoutes = () => {
@@ -26,7 +31,7 @@ export const AppRoutes = () => {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
 
-      {/* Protected Workspace Routes */}
+      {/* Protected Workspace Routes (Shared User & Admin Experience) */}
       <Route
         element={
           <ProtectedRoute>
@@ -39,10 +44,11 @@ export const AppRoutes = () => {
         <Route path="/tasks/:id" element={<TaskDetailsPage />} />
         <Route path="/team" element={<TeamPage />} />
         <Route path="/activity" element={<ActivityPage />} />
+        <Route path="/notifications" element={<NotificationsPage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/profile" element={<ProfilePage />} />
 
-        {/* Admin RBAC Protected Routes */}
+        {/* Admin RBAC Layer 1 Protected Routes (Strictly Guarded) */}
         <Route
           path="/admin"
           element={
@@ -56,6 +62,38 @@ export const AppRoutes = () => {
           element={
             <AdminRoute>
               <AdminUsersPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/tasks"
+          element={
+            <AdminRoute>
+              <AdminTasksPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/activity"
+          element={
+            <AdminRoute>
+              <AdminActivityPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/reports"
+          element={
+            <AdminRoute>
+              <AdminReportsPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/settings"
+          element={
+            <AdminRoute>
+              <AdminSettingsPage />
             </AdminRoute>
           }
         />
